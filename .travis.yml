@@ -1,0 +1,13 @@
+language: python
+python:
+  - "2.6"
+  - "2.7"
+  - "3.3"
+  - "pypy"
+# command to install dependencies, e.g. pip install -r requirements.txt --use-mirrors
+install: 
+  - "python setup.py develop"
+  - "pip install nose --use-mirrors"
+# command to run tests, e.g. python setup.py test
+script: 
+  - "nosetests -w tests"
