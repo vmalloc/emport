@@ -4,18 +4,24 @@ import os
 import sys
 import platform
 import logging
-
-_IS_PYTHON_3_3 = (platform.python_version() >= "3.3")
+import importlib
 
 _logger = logging.getLogger(__name__)
+_HAS_NEW_IMPORTLIB = (sys.version_info > (3, 3))
+
+if _HAS_NEW_IMPORTLIB:
+    from importlib.machinery import SourceFileLoader
 
 class NoInitFileFound(Exception):
     pass
 
 def import_file(filename):
     module_name = _setup_module_name_for_import(filename)
-    returned = __import__(module_name, fromlist=[''])
-    return returned
+    if _HAS_NEW_IMPORTLIB:
+        if os.path.isdir(filename):
+            filename = os.path.join(filename, "__init__.py")
+        return SourceFileLoader(module_name, filename).load_module()
+    return __import__(module_name, fromlist=[''])
 
 _package_name_generator = ('_{0}'.format(x) for x in itertools.count())
 
@@ -68,7 +74,7 @@ def _make_module_name(filename):
 def _create_package_module(name, path):
     imp.acquire_lock()
     try:
-        if _IS_PYTHON_3_3:
+        if _HAS_NEW_IMPORTLIB:
             # the package import machinery works a bit differently in
             # python 3.3
             returned = imp.new_module(name)
