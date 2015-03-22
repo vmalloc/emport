@@ -73,7 +73,7 @@ def test_importing_directory(init_py_directly, tmpdir, module_file_factory):
     else:
         module = emport.import_file(directory)
 
-    #assert module.__name__.endswith(".pkg")
+    assert module.__name__.endswith(".pkg")
     assert module.value == expected_value
 
 

@@ -47,7 +47,10 @@ def _create_new_module_name(filename):
         package_name = _generate_package_name()
         sys.modules[package_name] = _create_package_module(package_name, nonpackage_dir)
         _cached_package_names[nonpackage_dir] = package_name
-    return '{0}.{1}'.format(package_name, remainder)
+    returned = '{0}.{1}'.format(package_name, remainder)
+    if returned.endswith('.__init__'):
+        returned = returned.rsplit('.', 1)[0]
+    return returned
 
 def _split_nonpackage_dir(path):
     if not os.path.isdir(path):
