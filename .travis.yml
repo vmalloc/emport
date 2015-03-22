@@ -4,5 +4,8 @@ python:
   - "2.7"
   - "3.3"
   - "pypy"
+install:
+  - "pip install -e ."
+  - "pip install pytest"
 script: 
-  - "python travis_build.py"
+  - "py.test tests"
