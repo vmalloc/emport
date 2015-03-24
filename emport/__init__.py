@@ -17,11 +17,22 @@ class NoInitFileFound(Exception):
 
 def import_file(filename):
     module_name = _setup_module_name_for_import(filename)
+
     if _HAS_NEW_IMPORTLIB:
-        if os.path.isdir(filename):
-            filename = os.path.join(filename, "__init__.py")
-        return SourceFileLoader(module_name, filename).load_module()
+        return _import_using_new_importlib(module_name, filename)
     return __import__(module_name, fromlist=[''])
+
+def _import_using_new_importlib(module_name, filename):
+    if os.path.isdir(filename):
+        filename = os.path.join(filename, "__init__.py")
+
+    package_name = module_name.rsplit('.', 1)[0]
+    if package_name != module_name and package_name not in sys.modules:
+        # need to import the package first
+        pkg = SourceFileLoader(package_name, os.path.join(os.path.dirname(filename), '__init__.py')).load_module()
+        sys.modules[package_name] = pkg
+
+    return SourceFileLoader(module_name, filename).load_module()
 
 _package_name_generator = ('_{0}'.format(x) for x in itertools.count())
 
