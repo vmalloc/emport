@@ -17,9 +17,6 @@ class NoInitFileFound(Exception):
 
 def import_file(filename):
     module_name = _setup_module_name_for_import(filename)
-
-    if _HAS_NEW_IMPORTLIB:
-        return _import_using_new_importlib(module_name, filename)
     return __import__(module_name, fromlist=[''])
 
 def _import_using_new_importlib(module_name, filename):
