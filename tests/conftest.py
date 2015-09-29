@@ -15,8 +15,9 @@ def preserve_sys_modules(request):
 
     @request.addfinalizer
     def cleanup():
-        sys.modules = old_modules
-        sys.path = old_path
+        sys.modules.clear()
+        sys.modules.update(old_modules)
+        sys.path[:] = old_path
 
 
 def create_module_file(directory, filename=None):
