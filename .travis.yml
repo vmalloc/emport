@@ -1,13 +1,22 @@
 language: python
+sudo: false
 python:
-  - "2.6"
-  - "2.7"
-  - "3.3"
-  - "3.4"
-  - "3.5"
-  - "pypy"
+  - 2.6
+  - 2.7
+  - 3.3
+  - 3.4
+  - 3.5
+  - pypy
 install:
-  - "pip install -e ."
-  - "pip install -r test_requirements.txt"
+  - pip install -e .
+  - pip install -r test_requirements.txt
 script: 
-  - "py.test tests"
+  - py.test tests
+deploy:
+  provider: pypi
+  user: vmalloc
+  password:
+    secure: IiRY8I5mIBebKxMUNygddVLyyd0j9gRG5hly5r07nIeqqB01cUhrHgTnfqQPBbVYsDzFYRNM4p2+D94YlsRyO/ylGXehNpA/Dmb5tVDLtycbQVBx4rkRwEa0nfcXaF3MO1P0NHbEi3scVhLiaYqTGWsEKGIhUrgWyckuAh99FKo=
+  on:
+    tags: true
+    repo: vmalloc/flux
