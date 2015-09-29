@@ -3,10 +3,11 @@ import itertools
 import os
 import sys
 import platform
-import logging
 import importlib
 
-_logger = logging.getLogger(__name__)
+import logbook
+
+_logger = logbook.Logger(__name__)
 _HAS_NEW_IMPORTLIB = (sys.version_info > (3, 3))
 
 if _HAS_NEW_IMPORTLIB:
@@ -50,9 +51,9 @@ def _setup_module_name_for_import(filename):
 _cached_package_names = {}
 
 def _create_new_module_name(filename):
-    _logger.debug("Creating new package for %s", filename)
+    _logger.trace("Creating new package for {0}", filename)
     nonpackage_dir, remainder = _split_nonpackage_dir(filename)
-    _logger.debug("After split: %s, %s", nonpackage_dir, remainder)
+    _logger.trace("After split: {0}, {1}", nonpackage_dir, remainder)
     package_name = _cached_package_names.get(nonpackage_dir, None)
     if package_name is None:
         package_name = _generate_package_name()
@@ -76,7 +77,7 @@ def _split_nonpackage_dir(path):
             break
         nonpackage_dir, current_component = os.path.split(nonpackage_dir)
         module.insert(0, current_component)
-        _logger.debug("Now at %s, %s", nonpackage_dir, module)
+        _logger.trace("Now at {0}, {1}", nonpackage_dir, module)
     if not module:
         raise NoInitFileFound("Could not find __init__.py file in {0}".format(path))
     return nonpackage_dir, ".".join(module)

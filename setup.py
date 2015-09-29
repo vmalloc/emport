@@ -5,7 +5,9 @@ from setuptools import setup, find_packages
 with open(os.path.join(os.path.dirname(__file__), "emport", "__version__.py")) as version_file:
     exec(version_file.read()) # pylint: disable=W0122
 
-_INSTALL_REQUIERS = []
+_INSTALL_REQUIERS = [
+    'Logbook>=0.11.0',
+]
 if sys.version_info < (2, 7):
     _INSTALL_REQUIERS.append("importlib")
 
