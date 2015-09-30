@@ -33,7 +33,7 @@ def _import_using_new_importlib(module_name, filename):
         pkg = SourceFileLoader(package_name, os.path.join(os.path.dirname(filename), '__init__.py')).load_module()
         sys.modules[package_name] = pkg
 
-    return SourceFileLoader(module_name, filename).load_module()
+    return __import__(module_name, fromlist=[''])
 
 _package_name_generator = ('_{0}'.format(x) for x in itertools.count())
 
