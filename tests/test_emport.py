@@ -1,5 +1,4 @@
 import os
-import sys
 import emport
 
 import pytest
@@ -74,6 +73,15 @@ def test_importing_directory(init_py_directly, tmpdir, module_file_factory):
         module = emport.import_file(directory)
 
     assert module.__name__.endswith(".pkg")
+    assert module.value == expected_value
+
+
+def test_importing_subdirectory_init_file(tmpdir, module_file_factory):
+    directory = tmpdir.join('pkg')
+    module_file_factory(directory, '__init__.py')
+    subdir = directory.join('subpkg')
+    filename, expected_value = module_file_factory(subdir, '__init__.py')
+    module = emport.import_file(filename)
     assert module.value == expected_value
 
 

@@ -3,9 +3,16 @@ import os
 import sys
 import uuid
 
+import logbook
+
 import pytest
 
 _filename_generator = ("module{0}.py".format(i) for i in itertools.count())
+
+
+@pytest.fixture(scope='session', autouse=True)
+def configure_logging():
+    logbook.StderrHandler().push_application()
 
 
 @pytest.fixture(autouse=True)

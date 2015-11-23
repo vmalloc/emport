@@ -24,10 +24,11 @@ def import_file(filename):
     return __import__(module_name, fromlist=[''])
 
 def _import_using_new_importlib(module_name, filename):
+    is_package = os.path.isdir(filename) or filename.endswith('__init__.py')
     if os.path.isdir(filename):
         filename = os.path.join(filename, "__init__.py")
 
-    package_name = module_name.rsplit('.', 1)[0]
+    package_name = module_name if is_package else module_name.rsplit('.', 1)[0]
     if package_name != module_name and package_name not in sys.modules:
         # need to import the package first
         pkg = SourceFileLoader(package_name, os.path.join(os.path.dirname(filename), '__init__.py')).load_module()
