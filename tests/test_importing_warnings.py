@@ -5,4 +5,4 @@ def test_importing_doesnt_emit_warnings(tmpdir, module_file_factory, recwarn):
     warnings.simplefilter('always')
     filename, _ = module_file_factory(tmpdir)
     module = import_file(filename)
-    assert len(recwarn) == 0
+    assert len(recwarn.list) == 0
