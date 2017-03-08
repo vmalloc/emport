@@ -7,3 +7,4 @@ flycheck-*
 dist
 .env
 .cache
+flycheck_*
