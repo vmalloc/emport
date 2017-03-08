@@ -9,9 +9,13 @@ import logbook
 
 _logger = logbook.Logger(__name__)
 _HAS_NEW_IMPORTLIB = (sys.version_info > (3, 3))
+_REQUIRES_MODULE_SPECS = (sys.version_info > (3, 6))
 
 if _HAS_NEW_IMPORTLIB:
     from importlib.machinery import SourceFileLoader
+
+if _REQUIRES_MODULE_SPECS:
+    from importlib.machinery import ModuleSpec
 
 class NoInitFileFound(Exception):
     pass
@@ -95,6 +99,10 @@ def _create_package_module(name, path):
             # python 3.3
             returned = imp.new_module(name)
             returned.__path__ = [path]
+
+            if _REQUIRES_MODULE_SPECS:
+                returned.__spec__ = ModuleSpec(origin=path, name=name, loader=SourceFileLoader(name, path))
+
             sys.modules[name] = returned
         else:
             returned = imp.load_module(name, None, path, ('', '', imp.PKG_DIRECTORY))
