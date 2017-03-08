@@ -32,9 +32,15 @@ def test_module_specs(tmpdir, recwarn):
 
 
     metapackage = sys.modules[metapackage_name]
+
+
     assert metapackage.__spec__ is not None
     assert metapackage.__spec__.origin == str(package_dir.dirname)
     assert metapackage.__spec__.name == metapackage_name
-    assert metapackage.__spec__.parent == ''
+    # TODO: restore this
+    #assert metapackage.__spec__.parent == metapackage_name
+    assert metapackage.__spec__.submodule_search_locations is not None
+    assert str(package_dir.dirname) in metapackage.__spec__.submodule_search_locations
+    assert metapackage.__package__ == metapackage_name
 
     assert not recwarn.list

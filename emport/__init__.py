@@ -99,9 +99,11 @@ def _create_package_module(name, path):
             # python 3.3
             returned = imp.new_module(name)
             returned.__path__ = [path]
+            returned.__package__ = name
 
             if _REQUIRES_MODULE_SPECS:
-                returned.__spec__ = ModuleSpec(origin=path, name=name, loader=SourceFileLoader(name, path))
+                returned.__spec__ = ModuleSpec(origin=path, name=name, loader=SourceFileLoader(name, path), is_package=True)
+                returned.__spec__.submodule_search_locations.append(path)
 
             sys.modules[name] = returned
         else:
