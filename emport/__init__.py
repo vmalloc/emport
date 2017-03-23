@@ -111,7 +111,7 @@ def _split_nonpackage_dir(path):
 
 
 def _normalize_path(path):
-    return os.path.normpath(os.path.abspath(path))
+    return os.path.normpath(os.path.abspath(str(path)))
 
 
 def _make_module_name(filename):
