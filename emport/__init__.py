@@ -1,21 +1,11 @@
-import imp
 import itertools
 import os
 import sys
-import platform
 import importlib
-
 import logbook
+from importlib.machinery import ModuleSpec, SourceFileLoader
 
 _logger = logbook.Logger(__name__)
-_HAS_NEW_IMPORTLIB = (sys.version_info > (3, 3))
-_REQUIRES_MODULE_SPECS = (sys.version_info > (3, 6))
-
-if _HAS_NEW_IMPORTLIB:
-    from importlib.machinery import SourceFileLoader
-
-if _REQUIRES_MODULE_SPECS:
-    from importlib.machinery import ModuleSpec
 
 
 class NoInitFileFound(Exception):
@@ -27,9 +17,7 @@ def import_file(filename):
     """
     module_name = _setup_module_name_for_import(filename)
 
-    if _HAS_NEW_IMPORTLIB:
-        return _import_using_new_importlib(module_name, filename)
-    return __import__(module_name, fromlist=[''])
+    return _import_using_new_importlib(module_name, filename)
 
 
 def set_package_name(directory, name):
@@ -120,24 +108,9 @@ def _make_module_name(filename):
 
 
 def _create_package_module(name, path):
-    imp.acquire_lock()
-    try:
-        if _HAS_NEW_IMPORTLIB:
-            # the package import machinery works a bit differently in
-            # python 3.3
-            returned = imp.new_module(name)
-            returned.__path__ = [path]
-            returned.__package__ = name
-
-            if _REQUIRES_MODULE_SPECS:
-                returned.__spec__ = ModuleSpec(
-                    origin=path, name=name, loader=SourceFileLoader(name, path), is_package=True)
-                returned.__spec__.submodule_search_locations.append(path)
-
-            sys.modules[name] = returned
-        else:
-            returned = imp.load_module(
-                name, None, path, ('', '', imp.PKG_DIRECTORY))
-    finally:
-        imp.release_lock()
+    spec = ModuleSpec(origin=path, name=name, loader=SourceFileLoader(name, path), is_package=True)
+    spec.submodule_search_locations.append(path)
+    returned = importlib.util.module_from_spec(spec)
+    returned.__path__ = [path]
+    sys.modules[name] = returned
     return returned
