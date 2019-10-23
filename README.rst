@@ -1,8 +1,8 @@
 .. image:: https://secure.travis-ci.org/vmalloc/emport.png?branch=master,dev
 
-.. image:: https://pypip.in/d/emport/badge.png
+.. image:: https://img.shields.io/pypi/dm/emport.svg
 
-.. image:: https://pypip.in/v/emport/badge.png
+.. image:: https://img.shields.io/pypi/v/emport.svg
 
 Overview
 ========
