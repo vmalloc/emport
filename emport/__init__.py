@@ -2,6 +2,7 @@ import itertools
 import os
 import sys
 import importlib
+import importlib.util
 import logbook
 from importlib.machinery import ModuleSpec, SourceFileLoader
 
@@ -37,9 +38,15 @@ def _import_using_new_importlib(module_name, filename):
     package_name = module_name if is_package else module_name.rsplit('.', 1)[0]
     if package_name != module_name and package_name not in sys.modules:
         # need to import the package first
-        pkg = SourceFileLoader(package_name, os.path.join(
-            os.path.dirname(filename), '__init__.py')).load_module()
+        spec = importlib.util.spec_from_file_location(
+            package_name,
+            os.path.join(os.path.dirname(filename), '__init__.py')
+        )
+        assert spec is not None
+        pkg = importlib.util.module_from_spec(spec)
         sys.modules[package_name] = pkg
+        assert spec.loader is not None
+        spec.loader.exec_module(pkg)
 
     return __import__(module_name, fromlist=[''])
 
