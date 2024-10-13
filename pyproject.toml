@@ -18,8 +18,13 @@ classifiers = [
     "Programming Language :: Python :: 3.13",
 ]
 dependencies = ['Logbook>=0.11.0']
+
 dynamic = ["version"]
+
 authors = [{ name = "Rotem Yaari", email = "vmalloc@gmail.com" }]
+
+[project.urls]
+"GitHub" = "https://github.com/vmalloc/emport"
 
 [project.optional-dependencies]
 testing = ["pytest", "dessert>=1.5.0"]
