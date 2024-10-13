@@ -6,15 +6,16 @@ build-backend = "setuptools.build_meta"
 name = "emport"
 description = "Utility library for performing programmatic imports"
 readme = "README.md"
-requires-python = ">=3.7"
+requires-python = ">=3.8"
 license = { text = "BSD 3-Clause License" }
 
 classifiers = [
-    "Programming Language :: Python :: 3.6",
-    "Programming Language :: Python :: 3.7",
     "Programming Language :: Python :: 3.8",
     "Programming Language :: Python :: 3.9",
     "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
 ]
 dependencies = [
     'Logbook>=0.11.0',
@@ -27,5 +28,5 @@ authors = [
 [project.optional-dependencies]
 testing = [
     "pytest",
-    "dessert",
+    "dessert>=1.5.0",
 ]
