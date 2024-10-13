@@ -1,5 +1,5 @@
 
-![Build Status](https://github.com/github/vmalloc/emport/workflows/main.yml/badge.svg)
+![Build Status](https://github.com/vmalloc/emport/actions/workflows/main.yml/badge.svg?branch=develop)
 ![Supported Versions](https://img.shields.io/pypi/pyversions/emport.svg)
 ![Latest Version](https://img.shields.io/pypi/v/emport.svg)
 
