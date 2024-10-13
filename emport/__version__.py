@@ -1,4 +1,4 @@
-import pkg_resources
+from importlib.metadata import  distribution
 
 
-__version__ = pkg_resources.get_distribution("emport").version
+__version__ = distribution("emport").version
